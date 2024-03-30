@@ -5,7 +5,7 @@ pipeline {
   }
   environment {
     imageName = 'lance0821/react-app'
-    registryCredential = 'lance0821'
+    registryCredential = 'dockerhub-creds'
     dockerImage = ''
   }
   stages {
@@ -26,11 +26,12 @@ pipeline {
         }
       }
     }
-    stage('Deploy Image') {
+        stage('Deploy Image') {
       steps {
         script {
-          docker.withRegistry( 'https://registry.hub.docker.com', 'dockerhub-creds' ) {
-            dockerImage.push('${env.BUILD_NUMBER}')
+          // Assuming registryCredential is the correct ID for Docker Hub credentials
+          docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+            dockerImage.push("${env.BUILD_NUMBER}")
           }
         }
       }
